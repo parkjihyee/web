@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소개페이지</title>
+</head>
+
+<body>
+    <h3>홍길동</h3>
+    <h3>20살</h3>
+    <h3>010-1234-1234</h3>
+    <a href="index.html">첫페이지</a>
+
+    <ul id="fruit" style="color: red; background-color:yellow;"> 
+        <li>사과</li>
+        <li>파인애플</li>
+        <li>체리</li>
+    </ul>
+
+    <script>
+        let h3s = document.getElementsByTagName('h3');
+        console.log(h3s[0].innerText);
+        h3s[0].innerText = 'Hongkildong';
+
+        let fruit = document.getElementById('fruit');
+        console.log(fruit);
+        fruit.children[0].innerText = 'Apple';
+    </script>
+</body>
+
+</html>
