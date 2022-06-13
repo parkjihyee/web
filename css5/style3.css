@@ -1,0 +1,30 @@
+/* css/style3.css */
+body{
+    font: 15px "맑은 고딕";
+}
+.container {
+    border: 1px solid green;
+    width: 960px;
+    margin: 0 auto;
+}
+header{
+    position: relative;
+    height: 280px;
+    font-size: 3em; /* em: body태그에 적은 font size를 기준으로 3배. 페이지를 작은 화면에서 볼 때 화면 맞춤으로 크기가 변함*/
+    background-repeat: no-repeat;
+    background-image: url(images/bg.png);
+    background-position: left top;
+}
+header > h1{
+    position: absolute;
+    right: 20px;
+    bottom: 90px;
+    font-size: 1.5em;
+    color: skyblue;
+}
+header > h2{
+    position: absolute;
+    right: 20px;
+    bottom: 1px;
+    color: antiquewhite;
+}
