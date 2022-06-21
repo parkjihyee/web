@@ -1,0 +1,73 @@
+// 2022 06 21 _4
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="show">
+        
+    </div>
+        
+    <script>
+        let students = [{
+            sno: 1,
+            sname: "이희수"
+        }, {
+            sno: 2,
+            sname: "권소정"
+        }, {
+            sno: 3,
+            sname: "김하은"
+        }, {
+            sno: 4,
+            sname: "김가윤"
+        }];
+        // Document Object Model => object: 속성, 기능
+        let show = document.getElementById('show');
+
+        // console.log(ul);
+        show.appendChild(makeTable()); // 부모요소에 appendChild(자식 요소) 붙여넣기
+
+        function makeUL(){
+             // <ul><li>이름</li><li>이름</li><li>이름</li></ul>
+             // 요소 생성 createElement
+        let ul = document.createElement('ul'); // ul이라는 element를 만들겠다
+        students.forEach(elem =>{
+            let li = document.createElement('li'); // 만들어진 li의 주소를 참조하고있음
+            li.setAttribute('id', elem.sno); // attributeNode 추가 = id 속성으로 elem.sno를 추가
+            let txt = document.createTextNode(`${elem.sno}, ${elem.sname}`) // text의 node 생성
+            li.appendChild(txt);
+            // console.log(li);
+            ul.appendChild(li);
+        });
+        return ul;
+        }
+
+        function makeTable(){
+            //<table> <tr> <td> sno(text) </td> <td> sname </td> </tr> ..</table>
+            let table = document.createElement('table');
+            let tbody = document.createElement('tbody');
+            students.forEach(elem => {
+                let tr = document.createElement('tr'); // tr 생성
+                for(let key in elem){ // object에 있는 갯수만큼 돌림
+                    let td = document.createElement('td') // td 생성
+                    let txt = document.createTextNode(elem[key]);
+                    td.appendChild(txt);
+                    tr.appendChild(td);
+                    
+                }
+                table.appendChild(tr);
+                table.appendChild(tbody);
+                table.setAttribute("border","1");
+            });            
+            return table;
+        }
+
+    </script>
+</body>
+</html>

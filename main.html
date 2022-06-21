@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>main.html</title>
     <script>
-
-
-    //function_table
-       
-    //script 내용이 길어지면 아래와 같이 링크를 만들어서 옮김
-    // <script src ="js/exception.js"></script> 
+        //function_table      
+        //script 내용이 길어지면 아래와 같이 링크를 만들어서 옮김
+        // <script src ="js/exception.js">
+    </script>
     <!-- <button id="add">클릭</button>
     <script>
         let btn = document.getElementById('add');
@@ -19,11 +18,53 @@
         btn.addEventListener('click', function() { // 이벤트 받는 대상이 btn
             console.log(this); // 버튼을 받는 대상이? window, object 아니고 eventTarget
         })
-    </script> --> 
-</head> 
+        <script src = "array_method.js" >
+    </script> -->
+</head>
 
 <body>
     <!-- <input type="file" id="selectFile" name="selectFile" accept="text/plain"> -->
-    <script src ="string_literal.js"></script> 
+    <ul>
+        <li>Apple</li>
+        <li>Banana</li>
+        <li>Cherry</li>
+    </ul>
+    <div>
+    <h1>Cities</h1>
+    <ul>
+        <li id="one" class="red">Seoul</li>
+        <li id="two" class="red">London</li>
+        <li id="three" class="red">Newyork</li>
+        <li id="four">Tokyo</li>
+    </ul>
+</div>
 </body>
+    <button id="add1">클릭</button>
+    <button>클릭</button>
+    <script>
+        let list = document.getElementsByTagName('li'); // HTML Collection
+        let detail = list[3];
+        // element, attribute, text => node. DOM API(method(), 속성)
+        let attNode = detail.getAttribute('id');
+        let txtNode = detail.childNodes[0];
+        
+        let add1 = document.getElementById('add1')
+        add1.addEventListener('click', function() {
+        // element node 생성
+        let li = document.createElement('li'); // element node 생성
+        li.innerHTML = '대구';
+        let ul = document.querySelector('div > ul');
+        ul.appendChild(li); // <ul><li>대구</li></ul>
+        console.log(li);
+    });
+
+    let btns = document.querySelectorAll('button'); // 리턴값: Node(html에서 더 세분화된..?)List
+    btns[1].addEventListener('click', function(){
+        document.querySelector('div > ul > li').remove();
+    })
+    console.log(btns[1]);
+    </script>
+    </div>
+</body>
+
 </html>
