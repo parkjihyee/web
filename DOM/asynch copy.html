@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>asynch.html</title>
+    <script>
+        //2022 06 23 _1
+        // 동기 방식 vs 비동기 방식
+        // setTimeout : 매개값으로 들어온 함수를 기재한 시간만큼 지연했다가 콘솔에 띄움
+        // setTimeout(function () {
+        //     console.log('start');
+
+        //     setTimeout(function () {
+        //         console.log('mid');
+
+        //         setTimeout(function () {
+        //             console.log('end');
+        //         }, 1500);
+
+        //     }, 1000);
+
+        // }, 2000);
+
+        // console.log('start') - setTimeout(mid / 1000) - console.log('end')
+        //동기방식: strat - 1초 있다가 mid - end 출력 
+        //비동기방식: start - end - 1초 있다가 mid 출력
+
+        // 비동기방식으로 처리하는 : Asynchronous Javascript And XML
+        let xhtp = new XMLHttpRequest(); // Ajax : 파일정보 읽기
+        xhtp.open('get', '../js/dataset.xml'); // 매개값: 요청방식, 요청URL
+        xhtp.send(); //
+        xhtp.onload = loadCallBack;
+
+        function = loadCallBack() {
+            //text 형식으로 넘겨주는 파일들 넘기는 방식
+            //console.log(xhtp.responseText); // 요청한 페이지의 내용을 담는다
+            //document.write(xhtp.responseText);
+            //let data = JSON.parse(xhtp.responseText);
+            //console.log(data);
+            //
+            console.log(this.responseXML);
+            let doc = this.responseXML;
+            let records = doc.getElementsByTagName('record'); // HTML Collection / forOf 사용가능
+            records = doc.querySelectorAll('record'); //Node List / forEach 사용가능
+            console.log(records[0].children[0].innerHTML);
+
+            let show = document.getElementById('show');
+            // show라는 변수에다가 
+            
+            records.forEach(member => {
+                //console.log(member));
+                let str = '';
+                for(let i=0; i< member.children.length; i++){
+                    str += member.children[i].innerHTML + " ";
+                }
+                console.log(str);
+                let li = document.createElement('li');
+                let txt = document.createTextNode(str);
+                li.appendChild(txt);
+                show.appendChild(li);
+                //member.children[0].innerHTML; // id
+                //member.children[1].innerHTML; // f_n
+                //...이렇게 너무 많이 적어야해서 번거로우니 반복문을 생성했음
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <ul id="show">
+        <!--<li> id, fn, ln, em, sal </li> -->
+    </ul>
+
+</body>
+
+</html>

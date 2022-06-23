@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" name="sido" id="sido">
+    <button id="search">조회</button><br>
+    <select name="sidolist" id="sidolist">
+        <option value="all">--전체--</option>
+
+    </select>
+    <div id="show">
+        <!-- <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table> 이런 형식으로 만들것-->
+    </div>
+
+    <script>
+        //2022 06 23 _2?
+        let centerList = ''; // 다른 함수안에서도 사용하기위해 변수 선언
+        //조회버튼 클릭 시
+        document.getElementById('search').addEventListener('click', findSido); //findsido를 클릭할 때 아래의 함수 findsido가 실행됨
+
+        function findSido(ev) {
+            console.log(ev.target.nodeName)
+            let keyword = document.getElementById("sido").value;
+            if (ev.target.nodeName == 'SELECT') {
+                keyword = ev.target.value;
+            }
+
+            if (!keyword) { // keyword 값이 없으면
+                alert('검색할 시도를 입력하세요.');
+                return;
+            }
+            let filterList = centerList.filter(center => center.sido == keyword);
+
+            let tbody = document.createElement('tbody');
+            filterList.forEach(center => {
+                //console.log(center.id, center.sido, center.phoneNumber, center.centerName)
+                let tr = document.createElement('tr');
+                for (let field in fields) {
+                    let td = document.createElement('td');
+                    td.innerHTML = center[field];
+                    tr.append(td);
+                }
+                tbody.append(tr); // tbody에 하위요소로 tr 연결
+            });
+
+            // tbody 삭제
+            document.querySelector('#show > table > tbody').remove();
+            document.querySelector('#show > table').append(tbody); // show 하위의 table에 append 하겠다
+
+        }
+
+
+        let fields = {
+            id: '시도ID',
+            sido: '시도',
+            phoneNumber: '전화번호',
+            centerName: '센터이름',
+            address: '주소'
+        };
+
+        let xhtp = new XMLHttpRequest();
+        let url =
+            'https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=284&returnType=JSON&serviceKey=5iBVzPtNBenZer57q9nCQA5Ht3TGOmqF6dYg45UH3ar%2Fac2C4LOIQJ9eQpVWoswjbkldTfb1OZ3VesY1XIKZAA%3D%3D'
+        xhtp.open('get', url);
+        xhtp.send();
+        xhtp.onload = showList;
+
+        function showList() {
+            let result = JSON.parse(this.responseText)
+            console.log(result.data[0]);
+            centerList = result.data; // ajax가 호출된 후 centerList에 값을 저장
+
+            //
+            let sidoList = []; //centerList가 갖고있는 중복된 값을 하나로 group해서 넣기. / 반복문, indexOf, forEach
+            centerList.forEach(center => { // centerList가 전체 데이터 소유. 
+                //console.log(center.sido);
+                if (sidoList.indexOf(center.sido) == -1) { //sidolist에서 center.sido를 찾아서 리턴해줌. 없으면 -1리턴
+                    sidoList.push(center.sido);
+                };
+            });
+
+            let sel = document.getElementById('sidolist');
+            sel.addEventListener('change', findSido);
+
+            sidoList.forEach(sido => { // sidolist의 갯수만큼 옵션태그를 만들어서?
+                let opt = document.createElement('option');
+                opt.setAttribute('value', sido);
+                opt.innerHTML = sido;
+                sel.append(opt);
+            })
+
+            console.log(sidoList);
+
+
+
+            // table
+            let table = document.createElement('table');
+            table.setAttribute('border', '1');
+
+            // thead
+            let thead = document.createElement('thead');
+            let tr = document.createElement('tr');
+            thead.append(tr); // thead-tr부모자식 관계 형성
+            for (let field in fields) {
+                let td = document.createElement('th');
+                td.innerHTML = fields[field]; // ..?
+                tr.append(td);
+            }
+
+            // tbody
+            let tbody = document.createElement('tbody');
+            result.data.forEach(center => {
+                //console.log(center.id, center.sido, center.phoneNumber, center.centerName)
+                let tr = document.createElement('tr');
+                for (let field in fields) {
+                    let td = document.createElement('td');
+                    td.innerHTML = center[field];
+                    tr.append(td);
+                }
+                tbody.append(tr); // tbody에 하위요소로 tr 연결
+            });
+
+
+            // table.appendChild(thead);
+            // table.appendChild(tbody);
+            table.append(thead, tbody);
+
+            document.getElementById('show').append(table); // show 밑에 테이블을 단다..?
+        }
+    </script>
+</body>
+
+</html>
