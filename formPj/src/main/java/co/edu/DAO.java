@@ -7,14 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAO {
-	Connection conn; //이 클래스의 어느 영역에서도 사용할 수 있게
-	PreparedStatement psmt;
-	ResultSet rs;
+	public Connection conn; //이 클래스의 어느 영역에서도 사용할 수 있게 : Connection conn;
+	public PreparedStatement psmt;
+	public ResultSet rs;
 	
 	public void getConnect() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","hr","hr");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","scott","tiger");
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

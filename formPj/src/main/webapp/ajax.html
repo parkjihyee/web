@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border=1>
+		<thead>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>jobID</th>
+		</thead>
+		<tbody id="empList"></tbody>
+	</table>
+	<script>
+	let fields = {
+			empId : 'ID',
+			lastName : 'Name',
+			email : 'Email',
+			jobId : 'jobID'
+	}
+	
+  	let xhtp = new XMLHttpRequest();
+  	xhtp.open('get', 'EmpServlet');
+  	xhtp.send();
+  	xhtp.onload = function(){
+  		let data = JSON.parse(this.responseText);
+  		let tbody = document.getElementById('empList');
+  		data.forEach(emp => {
+  			let tr = document.createElement('tr');
+  		
+  			// object 선언된 개수만큼 필드 보여주기 위해
+  			for (let field in fields){
+  				let td = document.createElement('td');
+  				td.innerHTML = emp[field];
+  				tr.append(td);
+  			}
+  			tbody.append(tr);
+  		});
+  		console.log(tbody);
+  	}
+  	
+  </script>
+</body>
+</html>

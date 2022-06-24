@@ -47,6 +47,31 @@ public class EmpDAO extends DAO{
 			disconnect();
 		}
 		return list;
-	}
+	} // end of getNames
 
-}
+	public List<Employee> empList(){
+		getConnect();
+		String sql = "select * from employees";
+		List<Employee> list = new ArrayList<>();
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) { // 한 건씩 읽어오겠다
+				Employee emp = new Employee();
+				emp.setEmail(rs.getString("email"));
+				emp.setEmpId(rs.getInt("employee_id"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
+				emp.setLastName(rs.getString("last_name"));
+				
+				list.add(emp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return list;
+	}
+} 
