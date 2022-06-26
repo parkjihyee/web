@@ -6,42 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>main.html</title>
-    <script>
-        //function_table      
-        //script 내용이 길어지면 아래와 같이 링크를 만들어서 옮김
-        // <script src ="js/exception.js">
-    </script>
-    <!-- <button id="add">클릭</button>
-    <script>
-        let btn = document.getElementById('add');
-        console.log(btn);
-        btn.addEventListener('click', function() { // 이벤트 받는 대상이 btn
-            console.log(this); // 버튼을 받는 대상이? window, object 아니고 eventTarget
-        })
-        <script src = "array_method.js" >
-    </script> -->
-</head>
-
-<body>
-    <!-- <input type="file" id="selectFile" name="selectFile" accept="text/plain"> -->
+  
     <ul>
         <li>Apple</li>
         <li>Banana</li>
         <li>Cherry</li>
     </ul>
     <div>
-    <h1>Cities</h1>
-    <ul>
+        <h1>Cities</h1>
+        <ul>
         <li id="one" class="red">Seoul</li>
         <li id="two" class="red">London</li>
         <li id="three" class="red">Newyork</li>
         <li id="four">Tokyo</li>
     </ul>
 </div>
-</body>
+    <!--내부 스크립트 파일 -->
     <button id="add1">클릭</button>
     <button>클릭</button>
-    <script>
+   
         let list = document.getElementsByTagName('li'); // HTML Collection
         let detail = list[3];
         // element, attribute, text => node. DOM API(method(), 속성)
@@ -51,7 +34,7 @@
         let add1 = document.getElementById('add1')
         add1.addEventListener('click', function() {
         // element node 생성
-        let li = document.createElement('li'); // element node 생성
+        let li = document.createElement('li'); 
         li.innerHTML = '대구';
         let ul = document.querySelector('div > ul');
         ul.appendChild(li); // <ul><li>대구</li></ul>
@@ -60,11 +43,16 @@
 
     let btns = document.querySelectorAll('button'); // 리턴값: Node(html에서 더 세분화된..?)List
     btns[1].addEventListener('click', function(){
-        document.querySelector('div > ul > li').remove();
+        document.querySelector('div > ul > li').remove(); //선택자에 만족하는 요소 1개만 가져온다(div 아래 ul 아래 li 에서 하나)
     })
-    console.log(btns[1]);
+    console.log(btns[1]); //2번째 버튼(idx 1)
+    
     </script>
-    </div>
+    
+    <!-- 외부 스크립트 파일 -->
+    <!-- <script src="js/array_method.js"></script> -->
+    </head>
+<body>
 </body>
 
 </html>
