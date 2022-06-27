@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>박지혜 페이지</title>
+    <style>
+        header nav ul {
+            background-color: white;
+            height: 70px;
+            border-bottom: 1px solid black;
+            border-top: 1px solid black;
+        }
+
+        header nav li {
+            display: inline-block;
+            width: 110px;
+            margin: 23px 10px ;
+            
+        }
+        header nav li a:hover{
+            border-bottom: 2px solid black;
+        }
+        header nav a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .left {
+            width:20%;
+            float: left;
+
+        }
+
+        .right {
+            width: 78%;
+            float: left;
+
+        }
+        section nav a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .board {}
+
+        td {
+            height: 40px;
+
+        }
+
+        .searchbar {
+            position: relative;
+            left: 400px;
+        }
+
+        .page_info {
+            font-size: 10pt;
+            font-weight: bold;
+        }
+
+        .smenu {
+            border-bottom: 1px solid black;
+        }
+
+        .stitle {
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#">감염병</a></li>
+                    <li><a href="#">건강정보</a></li>
+                    <li><a href="#">정책정보</a></li>
+                    <li><a href="#">연구개발</a></li>
+                    <li><a href="#">알림.자료</a></li>
+                    <li><a href="#">간행물.통계</a></li>
+                    <li><a href="#">민원.정보공개</a></li>
+                    <li><a href="#">기관소개</a></li>
+                    <li><a href="#">사업별 누리집</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="left">
+
+            <section id="sidebar">
+                <table class="tg" style="undefined;table-layout: fixed; width: 148px">
+                    <colgroup>
+                        <col style="width: 148px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="stitle">알림. 자료</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="smenu">이달의 건강소식</td>
+                        </tr>
+                        <tr>
+                            <td class="smenu">보도자료</td>
+                        </tr>
+                        <tr>
+                            <td class="smenu">포토뉴스</td>
+                        </tr>
+                        <tr>
+                            <td class="smenu">홍보자료</td>
+                        </tr>
+                        <tr>
+                            <td class="smenu">공지사항</td>
+                        </tr>
+                        <tr>
+                            <td class="smenu">채용공고</td>
+                        </tr>
+                        <tr>
+                            <td class="smenu">법령.지침.서식</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+        </div>
+        <div class="right">
+
+
+            <section id="content">
+                <h2 class="title">공고/공시</h2>
+            </section>
+
+            <section id="content_detail" class="content_body">
+                <div class="searchbar">
+                    <form>
+                        <span class="form-select">
+                            <select name="keyField" id="select">
+                                <option value="s_title">제목</option>
+                            </select>
+                        </span>
+                        <span class="form-input">
+                            <input type="text" name="keyWord" placeholder="검색어를 입력하세요" title="검색어를 입력하세요" value="">
+                        </span>
+                        <input type="button" value="검색">
+
+                    </form>
+                </div>
+                <p class="page_info">
+                    전체 3,320건,
+                    현재 페이지 2/332
+                </p>
+                <div class="board">
+                    <table class="thead">
+                        <thead>
+                            <tr>
+                                <td>번호</td>
+                                <td>제목</td>
+                                <td>작성자</td>
+                                <td>날짜</td>
+                                <td>조회수</td>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+                            <tr>
+                                <td>3310</td>
+                                <td>[건강정보 개발 및 국가건강정보포털 운영] 2022년</td>
+                                <td>만성질환예방과</td>
+                                <td>2021-12-28</td>
+                                <td>137</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>3309</td>
+                                <td>국제공인예방접종지정기관 지정 공고</td>
+                                <td>질병관리청 검역정책과</td>
+                                <td>2021-12-23</td>
+                                <td>305</td>
+                            </tr>
+
+                            <tr>
+                                <td>3308</td>
+                                <td>2022년 환전외국환은행 선정결과 공고</td>
+                                <td>백신계약팀</td>
+                                <td>2021-12-23</td>
+                                <td>184</td>
+                            </tr>
+
+                            <tr>
+                                <td>3307</td>
+                                <td>2021년 질병관리청 정책연구용역</td>
+                                <td>운영지원과</td>
+                                <td>2021-12-20</td>
+                                <td>378</td>
+                            </tr>
+
+                            <tr>
+                                <td>3306</td>
+                                <td>2021년 질병관리청 정책연구용역</td>
+                                <td>운영지원과</td>
+                                <td>2021-12-17</td>
+                                <td>432</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
