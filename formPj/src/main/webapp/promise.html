@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>promise.html</title>
+</head>
+<body>
+	<div id="show">
+    	<table border="1">
+    		<thead>
+    			<tr>
+    				<th>회원번호</th>
+    				<th>회원이름</th>
+    				<th>연락처</th>
+    				<th>주소</th>
+    				<th>생년월일</th>
+    				<th>사진</th>
+    				<th>삭제</th>
+    				
+    			</tr>   		
+    		</thead>
+    		<tbody>
+    		</tbody>
+    	</table>
+    </div>
+    
+    <script>
+        // promise => fetch 사용? : pending, fullfilled, rejected, then(), catch()
+        let promise = new Promise(function (reslove, reject) { // 성공하면 reslove 실행, 실패하면 reject 실행
+            setTimeout(function () {
+                reslove('success'); // 성공했을때 실행할 콜백함수
+            }, 1000);
+        });
+
+        promise // 성공하면 then 실행, 실패하면 catch 실행?
+            .then(function(result){
+                console.log(result);
+            })
+            .catch(function(error){
+                console.log(error);
+            })
+        
+        function asyncwork(value){
+            return new Promise(function(reslove, reject){
+                setTimeout(function(){
+                    value -= 20;
+                    if(value>50){
+                        reslove(value);
+                    }else{
+                        reject(value);
+                    }
+                }, 1000);
+            });
+        }
+        asyncwork(100)
+            .then(function(value){
+                console.log(value);
+                return asyncwork(value);
+            })
+            .then(function(value){
+                console.log(value);
+                return asyncwork(value);
+            })
+            .then(function(value){
+                console.log(value);
+                return asyncwork(value);
+            })
+            .catch(function(error){
+                console.log('catch: ' + error);
+            })
+            
+		let fields = ['membNo', 'membName', 'membPhone', 'membAddr', 'membBirth', 'membImage'];
+    	
+    	function makeTr(member){
+    		let tr = document.createElement('tr');
+    		tr.setAttribute('id', member.membNo); // tr의 attribute중에 id를 활용
+    		//tr 클릭 : text 필드에 값이 나오도록 | 버튼, 체크박스에는 상위 요소의 이벤트 전파 차단
+    		//tr.addEventListener('click', showDetail);
+    		fields.forEach(field => { //fields 개수만큼 반복
+    			let td = document.createElement('td');
+    			//td.innerHTML = member[field];
+				//td.innerHTML = member[field] ? member[field] : (!'' ? field == 'membImage' ? 'no img' : '' : '');
+    			//null, 0, undefined, '' => false 이외 true;
+    			td.innerHTML = member[field] ? member[field]:(!'' ? field == 'memebImage'?'no img':'':'')
+    					// 참이면 ? 뒤의 값을 innerHTML에, 거짓이면 (괄호 안)실행
+    					//!'' 이 참일때 필드 값이 membImage면 no img 출력, 아니면 '', 다 아니면 ''출력
+    			//member[field]가 참이면 (true) member[field를 넣고]
+				//공백은 false 처리 => !'' => true
+				//member[field]가 없으면(공란이면) => 값이 없으면 => field 속성이 membImage => no img, 다른 field면 그냥 공란
+				//삼항연산자 => if문
+    			tr.append(td);
+    		})
+    		
+    		
+    		// 삭제버튼 생성 (key값: memb_no)
+    		let btn = document.createElement('button');
+    		btn.innerHTML = '삭제';
+    		//삭제 버튼 (클릭) -> 이벤트
+    		//btn.addEventListener('click', rowDelete, false); // 디폴트값은 왜false? 하위요소부터 상위요소로.. true이면 상위요소부터 하위요소로 찾아가기 때문? / bubble, capture
+			let td = document.createElement('td'); // 표 테두리안에 넣게하기위해
+			td.append(btn); //td 의 자식요소 : button
+    		tr.append(td);
+    		
+    		// 체크박스 생성 input type='checkbox'
+    		let cbox = document.createElement("input");
+    		cbox.setAttribute('type', "checkbox");
+    		td=document.createElement('td');
+    		td.append(cbox);
+    		tr.append(td);
+    		return tr;
+    	}
+        
+        // fetch는 반환하는 값이 promise
+            fetch('member?cmd=list') // json
+                .then(function(result){
+                    return result.json(); // text -> json
+                })
+                .then(function(result){
+                	let tbody = document.querySelector('#show tbody');
+                	result.forEach(member=>{
+                		tbody.append(makeTr(member));
+                	})
+                })
+                .catch(function(error){
+                    console.error(error);
+                })
+    </script>
+
+</body>
+</html>

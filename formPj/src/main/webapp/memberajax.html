@@ -49,7 +49,8 @@
         
         <input type="submit" value="추가">
         <input type="reset" value="초기화">
-        <input type="button" value="선택삭제">
+        <input type="button" value="선택삭제" id="deleteSel">
+        <input type="button" value="수정" id="modify">
     </form>
     
     <div id="show">
@@ -62,6 +63,8 @@
     				<th>주소</th>
     				<th>생년월일</th>
     				<th>사진</th>
+    				<th>삭제</th>
+    				
     			</tr>   		
     		</thead>
     		<tbody>
@@ -70,35 +73,200 @@
     </div>
     
     <script>
+    	// 리스트 출력 (해보기)
+    	let ajax = new XMLHttpRequest();
+    	ajax.open('get', 'member?cmd=list');
+    	ajax.send();
+    	ajax.onload = function(){
+    		let data = JSON.parse(this.responseText)
+    		
+    		let tbody = document.querySelector('#show tbody');
+    		data.forEach(member => {
+    			tbody.append(makeTr(member));
+    		})
+    	}
+    	
+    
     	// 추가버튼 클릭 시 
     	document.forms.memberFrm.addEventListener('submit', function(e){
     		e.preventDefault();
     		console.log(this);
-    		let mNo = this.memberNo.value; // this : form?
+    		let mNo = this.memberNo.value; // this : form - 이벤트를 받는 객체
     		let mNm = this.memberName.value;
     		let mAr = this.address.value;
     		let mPh = this.phone.value;
     		let mBi = this.birth.value;
     		
+    		// Ajax 호출
     		let xhtp = new XMLHttpRequest();
     		xhtp.open('post', 'member') // 요청방식: post : 매개값이 몸체에 담겨서 넘어감
     		xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); //넘어가는 데이터의? 타입을 지정해줌
     		xhtp.send(`name=${mNm}&addr=${mAr}&phone=${mPh}&birth=${mBi}&cmd=add`);
+    		//name 으로 넘어간 값은 mNm로, addr로 넘어간 값은 mAr로..
     		xhtp.onload = function(){
     			let result = JSON.parse(this.responseText); // this: xhtp
-    			console.log(result);
+    			console.log(result); //입력 후 결과값 콘솔에 출력(obj타입)
     			document.querySelector('#show tbody').append(makeTr(result)); // result : obj 타입..하단의 
+    			//id값이 list인 tbody에 만들어진 result값으로 만들어진 tr을 append
     		}
     	})
-    	let fields = ['memNo', 'membName', 'membPhone', 'membAddr', 'membBirth', 'membImage'];
+    	// 회원정보 => tr 생성
+    	let fields = ['membNo', 'membName', 'membPhone', 'membAddr', 'membBirth', 'membImage'];
+    	
     	function makeTr(member){
     		let tr = document.createElement('tr');
-    		fields.forEach(field => {
+    		tr.setAttribute('id', member.membNo); // tr의 attribute중에 id를 활용
+    		//tr 클릭 : text 필드에 값이 나오도록 | 버튼, 체크박스에는 상위 요소의 이벤트 전파 차단
+    		tr.addEventListener('click', showDetail);
+    		fields.forEach(field => { //fields 개수만큼 반복
     			let td = document.createElement('td');
-    			td.innerHTML = member[field];
+    			//td.innerHTML = member[field];
+				//td.innerHTML = member[field] ? member[field] : (!'' ? field == 'membImage' ? 'no img' : '' : '');
+    			//null, 0, undefined, '' => false 이외 true;
+    			td.innerHTML = member[field] ? member[field]:(!'' ? field == 'memebImage'?'no img':'':'')
+    					// 참이면 ? 뒤의 값을 innerHTML에, 거짓이면 (괄호 안)실행
+    					//!'' 이 참일때 필드 값이 membImage면 no img 출력, 아니면 '', 다 아니면 ''출력
+    			//member[field]가 참이면 (true) member[field를 넣고]
+				//공백은 false 처리 => !'' => true
+				//member[field]가 없으면(공란이면) => 값이 없으면 => field 속성이 membImage => no img, 다른 field면 그냥 공란
+				//삼항연산자 => if문
     			tr.append(td);
     		})
+    		
+    		
+    		// 삭제버튼 생성 (key값: memb_no)
+    		let btn = document.createElement('button');
+    		btn.innerHTML = '삭제';
+    		//삭제 버튼 (클릭) -> 이벤트
+    		btn.addEventListener('click', rowDelete, false); // 디폴트값은 왜false? 하위요소부터 상위요소로.. true이면 상위요소부터 하위요소로 찾아가기 때문? / bubble, capture
+			let td = document.createElement('td'); // 표 테두리안에 넣게하기위해
+			td.append(btn); //td 의 자식요소 : button
+    		tr.append(td);
+    		
+    		// 체크박스 생성 input type='checkbox'
+    		let cbox = document.createElement("input");
+    		cbox.setAttribute('type', "checkbox");
+    		td=document.createElement('td');
+    		td.append(cbox);
+    		tr.append(td);
     		return tr;
+    	}
+    	
+    	// tr부분 클릭하면 form 요소 보여주기 
+    	function showDetail(){
+    		//선택한 tr의 자식요소를 form에 보여주기
+    		console.log(this.children[4].innerHTML); //this는 tr태그
+    		document.getElementById('birth').value = (this.children[4].innerHTML.substring(0,10));
+    		document.getElementById('memberNo').value = (this.children[0].innerHTML);
+    		document.getElementById('memberName').value = (this.children[1].innerHTML);
+    		// ** 추가하기
+    	}
+    	
+    	// 삭제버튼 실행 콜백함수
+    	//this : 함수를 eventlistener에 넣기 때문에 event를 받는 객체(btn)를 의미
+    	//tr > td > btn | tr의 첫번째 값(td)의 첫번째 값을 읽어오면 회원번호
+    	//let delId = this.parentElement.parentElement.children[0].innerHTML;
+    	function rowDelete(){
+    		console.log(this.parentElement.parentElement.children[0].innerHTML);
+    								//버튼 - td - tr
+    		let delId = this.parentElement.parentElement.getAttribute('id');
+			let delAjax = new XMLHttpRequest();
+    		delAjax.open('post', 'member'); //post 방식이라 url에 cmd 넣으면 안됨
+    		
+    		// 서버에서 삭제
+    		delAjax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    		delAjax.send(`cmd=remove&delNo=${delId}`);
+    		//get 방식의 경우에는 open에 바로 파라미터를 넣었지만 post에는 send()에 파라미터를 넣어줘야함
+    		// 화면에서 삭제
+    		delAjax.onload = function() { 
+    			//로딩이 되면 실행할 함수
+    			let result = JSON.parse(delAjax.responseText); // {retCode: Sucess / Fail}
+    			// 결과값으로 받아온것이 성공 (result.retCode == 'Sucess')
+    			if (result.retCode == 'Sucess'){
+    				alert('정상적으로 처리되었습니다.');
+    				document.getElementById(delId).remove();
+    			}else{
+    				alert('처리중. 에러발생!');
+    			}
+    		}
+    	}
+    	
+    	// 선택삭제
+    	//버튼을 누르면 deleteSelected 함수가 실행
+    	document.getElementById('deleteSel').addEventListener('click', deleteSelected);
+    	
+    	// 선택삭제 콜백함수
+    	function deleteSelected(){
+    		//check 된 항목을 전부 가져와서 => querySelectorAll : 배열로 가져옴
+    		// let checkAll = document.querySelectorAll('table > tbody > tr > td > input:checked'); 선택자..
+    		// 체크 true
+    		let checkAll = document.querySelectorAll('table > tbody > tr > td > input:checked');
+    		checkAll.forEach(elem => {
+    		// 서버에서 삭제 rowDelete함수와 기능 같음
+    		//checkbox의 부모 요소 : td/tr의 id값을 가져오겠다
+    			let delId = checkboxes.parentElement.parentElement.getAttribute('id')
+				console.log(delId); //선택된 checkbox의 id값
+				
+				//ajax 호출
+				let deleteAjax = new XMLHttpRequest();
+				deleteAjax.open('post', 'member');
+				deleteAjax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+				deleteAjax.send(`cmd=remove&delNo=${delId}`);
+				deleteAjax.onload = function() {
+					let result = JSON.parse(deleteAjax.responseText);
+					//retCode 가 success면 remove
+					if(result.retCode == 'Success'){
+						document.getElementById(delId).remove();
+					} else{
+						alert('error');
+					}
+				}
+			}
+		)
+	
+    	// 수정버튼 클릭 시
+    	document.getElementById('modify').addEventListener('click', modifyFnc);
+    	// 수정 콜백함수
+    	//수정 누르면 tr에서 바꾼 값이 파라미터로 넘어가도록
+    	function modifyFnc(){
+    		let frm = document.forms.memberFrm;	
+    	
+    		let mNo = frm.memberNo.value; 
+    		let mNm = frm.memberName.value;
+    		let mAr = frm.address.value;
+    		let mPh = frm.phone.value;
+    		let mBi = frm.birth.value;
+    		
+    		//Ajax 호출
+    		let xhtp = new XMLHttpRequest();
+    		xhtp.open('post', 'member') // 요청방식: post : 매개값이 몸체에 담겨서 넘어감
+    		xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); //넘어가는 데이터의? 타입을 지정해줌
+    		xhtp.send(`membNo=${mNo}&name=${mNm}&addr=${mAr}&phone=${mPh}&birth=${mBi}&cmd=modify`);
+    		xhtp.onload = function(){
+    			let result = JSON.parse(this.responseText); // {retCode: Sucess}
+    			console.log(result);
+    			if(result.retCode == 'Success'){
+	    			//console.log(result);
+	    			// 폼화면에서 사용자가 수정한 값이 => 표 값으로 변경
+	    			// id를 알고있으므로 tr 선택해올 수 있음
+	    			// 1.formToTable(mNo);
+	    			// 2.
+	    			let newTr = makeTr(result);
+	    			let oltTr = document.getElementById(mNo);
+	    			oldTr.parentNode.replaceChild(newTr, oldTr);
+	    			
+	    			//function formToTable(mNo)
+	    			//let tr = document.getElementById(memberNo);
+	    			//tr.children[0].innerHTML = document.getElementById('memberNo').value;
+	    			//tr.children[1].innerHTML = document.getElementById('memberName').value;
+	    			//tr.children[2].innerHTML = document.getElementById('phone').value;
+	    			//tr.children[3].innerHTML = document.getElementById('address').value;
+	    			//tr.children[4].innerHTML = document.getElementById('birth').value;
+    			}else{
+    				alert('에러 발생!');
+    			}
+    		}	
+    	}
     	}
     </script>
 </body>

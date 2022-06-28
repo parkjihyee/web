@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>파일업로드</title>
+<style>
+        form {
+            border: 2px solid green;
+        }
+
+        form>label {
+            display: inline-block;
+            width: 25%;
+            background-color: yellow;
+        }
+
+        #memberName {
+            background-color: aqua;
+        }
+
+        input[name="phone"] {
+            background-color: aquamarine;
+        }
+
+        form>input:nth-of-type(4) {
+            color: red;
+        }
+    </style>
+    
+    <script src=upload.js></script>
+    
+</head>
+
+<body>
+	<form action="memberUpload" name="memberFrm" method="post" enctype="multipart/form-data">
+        <label for="memberNo">회원번호</label>
+        <input type="number" name="memberNo" id="memberNo" readonly><br>
+        
+        <label for="memberName">회원이름</label>
+        <input type="text" name="memberName" id="memberName"><br>
+        
+        <label for="phone">연락처</label>
+        <input type="text" name="phone" id="phone"><br>
+        
+        <label for="address">주소</label>
+        <input type="text" name="address" id="address"><br>
+        
+        <label for="birth">생년월일</label>
+        <input type="date" name="birth" id="birth"><br>
+        
+        <label for="image">사진</label>
+        <input type="file" name="image" id="image"><br>
+        
+        <input type="submit" value="추가">
+        <input type="reset" value="초기화">
+        <input type="button" value="선택삭제" id="deleteSel">
+        <input type="button" value="수정" id="modify">
+    </form>
+    
+    <div id="show">
+    	<table border="1">
+    		<!-- <caption>회원 리스트</caption> -->
+    		<thead>
+    			<tr>
+    				<th>회원번호</th>
+    				<th>회원이름</th>
+    				<th>연락처</th>
+    				<th>주소</th>
+    				<th>생년월일</th>
+    				<th>사진</th>
+    				<th>삭제</th>
+    				
+    			</tr>   		
+    		</thead>
+    		<tbody>
+    		</tbody>
+    	</table>
+    </div>
+    
+
+</body>
+</html>

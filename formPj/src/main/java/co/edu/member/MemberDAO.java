@@ -69,8 +69,13 @@ public class MemberDAO extends co.edu.DAO {
 	// 수정.(MemberVO)
 	public boolean updateMember(MemberVO vo) {
 		getConnect();
-		String sql = "update member " + "set    memb_name = ?, " + "       memb_addr = ?, " + "       memb_phone = ?, "
-				+ "       memb_birth = ?, " + "       memeb_image = ? " + "where  memb_no = ?";
+		String sql = "update member "
+				   + "set    memb_name = ?, "
+				   + "       memb_addr = ?, "
+				   + "       memb_phone = ?,"
+				   + "       memb_birth = ?, " 
+				   + "       memeb_image = ? " 
+				   + "where  memb_no = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, vo.getMembName());

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 @WebServlet("/member") // 이걸 입력하면 get방식이면 doGet, post방식이면 doPost가 실행됨
 public class MemberServlet extends HttpServlet {
@@ -82,7 +83,7 @@ public class MemberServlet extends HttpServlet {
 		response.setContentType("text/json;charset=utf-8");
 		
 		// post방식의 요청이 되면 실행 메소드
-		String cmd = request.getParameter("cmd"); // cmd라는 파라미터를 읽어서 그 값이
+		String cmd = request.getParameter("cmd"); // cmd라는 파라미터를 읽어서 그 값이 vo에 담긴다?
 		
 		String membName = request.getParameter("name");
 		String membAddr = request.getParameter("addr");
@@ -110,11 +111,30 @@ public class MemberServlet extends HttpServlet {
 			
 		// 2.수정
 		} else if (cmd.equals("modify")) {
+			String mNo = request.getParameter("membNo");
+			vo.setMembNo(Integer.parseInt(mNo));
+			
+			JsonObject obj = new JsonObject(); // {"name":"홍길동", "age":20}
 			if(dao.updateMember(vo)) {
+			//넘겨주는 타입을 jason으로 만든다? 	
+			// {"membNo": "mNO", "membName": "membName", "membAddr": "membAddr", "memberPhone": "membPhon", "membBirth": "membBirth", "retCode": "Success"} 
+			// {"mno":?, "mName":?, "mAddr":?, ...} => object
 			   out.print("{\"retCode\": \"Sucess\"}");
+			   
+			// out.print("{\"membNo\": \""+mNO+"\", \"membName\": \"membName\", \"membAddr\": \"membAddr\", \"memberPhone\": \"membPhon\", \"membBirth\": \"membBirth\", \"retCode\": \"Success\"}");
+			
+			   obj.addProperty("membNo", mNo); // {"membNo": 10}
+			   obj.addProperty("membName", membName); // {"membNo": 10, "membName": "홍길동"}
+			   obj.addProperty("membAddr", membAddr); 
+			   obj.addProperty("membPhon", membPhon);
+			   obj.addProperty("membBirth", membBirt);
+			   obj.addProperty("retcode", "Success");
+			   
 			} else {
-				out.print("{\"retCode\": \"Fail\"}");
+			   obj.addProperty("retcode", "Fail");
 			}
+			System.out.println(gson.toJson(obj));
+			out.print(gson.toJson(obj)); // obj의 값을 json형태로 바꿈
 			
 		// 3.삭제
 		} else if (cmd.equals("remove")) {
@@ -125,6 +145,6 @@ public class MemberServlet extends HttpServlet {
 				out.print("{\"retCode\": \"Fail\"}");
 			}
 		}
-
+		
 	}
 }
