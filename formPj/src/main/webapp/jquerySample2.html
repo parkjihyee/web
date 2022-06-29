@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jquerySample2</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        let data = [{
+            id: 'user1',
+            name: '홍길동',
+            phone: '010-1111-2222',
+            age: 15
+        }, {
+            id: 'user2',
+            name: '이주연',
+            phone: '010-1111-0115',
+            age: 25
+        }];
+
+        $(document).ready(function () {
+            let tbody = $('table > tbody');
+            //jquery의 forEach | index, value, arr 순(매개변수)
+            $(data).each((idx, val) => {
+                let delBtn = $('<button />').text('삭제');
+                delBtn.on('click', function(){
+                    //on = addEventListener 과 동일한 기능
+                    console.log($(this));
+                    $(this).parent().parent().remove(); //btn의 parent(td)의 parent(tr) 삭제
+                })
+                // tr>td,td,td,td / append 뒤에 추가할것들 적기...
+                tbody.append(
+                    $('<tr />').attr('id', val.id)
+                    .append(
+                               $('<td />').text(val.id), //<td>user1</td>
+                               $('<td />').text(val.name),
+                               $('<td />').text(val.phone),
+                               $('<td />').text(val.age),
+                               $('<td />').append(delBtn) //td안에 버튼 추가
+                    ))
+            });
+        });
+        //
+        console.log(data)
+        //data.forEach()
+        console.log($(data));
+    </script>
+
+</head>
+
+<body>
+    <div id="show">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>회원아이디</th>
+                    <th>회원이름</th>
+                    <th>회원연락처</th>
+                    <th>회원나이</th>
+                    
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</body>
+
+</html>

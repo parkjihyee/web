@@ -89,7 +89,7 @@ function rowDelete() {
 	let formData = new FormData();
 	formData.append("cmd", "delete");
 	formData.append("delId", delId);
-
+	// id=32&name=hong
 	fetch('memberUpload', {
 		method: 'post',
 		headers: { 

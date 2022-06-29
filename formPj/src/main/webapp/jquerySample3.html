@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jquerySample2</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    	//XMLHttpRequest, fetch : Ajax(비동기)
+        $(document).ready(function(){
+        	let fdata = new FormData(); // multipart form data로 넘겨줄 형식들이 다양할때..?text, stream
+        	//ajax
+        	$.ajax({
+        		url: './member',
+        		method: 'get', //'post',
+        		contentType: 'application/x-www-form-urlencoded', //multipart/form-data
+        		data: 'cmd=list', //fdata, / parameter 호출페이지로 넘겨줄 값
+        		dataType: 'json', // json타입으로 받아오겠다 / 이렇게하면 파싱안해도 됨 / xml, html...
+        		success: function(result){
+        			
+        			let tbody = $('table > tbody');
+        			$(result).each(function (idx, elem) {
+        				//id, name, phone, age:계산
+        				let today = new Date();
+        				let birth = new Date(elem.membBirth.slice(0, 10));
+        				let age = today.getFullYear() - birth.getFullYear();
+        				console.log(today.getFullYear(), birth.getFullYear());
+        				tbody.append(
+        					$('<tr />').append(
+        						$('<td />').text(elem.membNo),
+        						$('<td />').text(elem.membName),
+        						$('<td />').text(elem.membphone),
+        						$('<td />').text(today.getFullYear(), birth.getFullYear()),
+        						$('<td />').append($('<button />').text('삭제'))
+        						));
+        			});
+        		},
+        		error: function(err){
+        			console.log(err);
+        		}
+        	});
+        });
+       
+    </script>
+
+</head>
+
+<body>
+    <div id="show">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>회원아이디</th>
+                    <th>회원이름</th>
+                    <th>회원연락처</th>
+                    <th>회원나이</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</body>
+
+</html>

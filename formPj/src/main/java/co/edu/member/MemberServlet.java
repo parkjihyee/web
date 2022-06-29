@@ -116,7 +116,7 @@ public class MemberServlet extends HttpServlet {
 			
 			JsonObject obj = new JsonObject(); // {"name":"홍길동", "age":20}
 			if(dao.updateMember(vo)) {
-			//넘겨주는 타입을 jason으로 만든다? 	
+			//넘겨주는 타입을 json으로 만든다? 	
 			// {"membNo": "mNO", "membName": "membName", "membAddr": "membAddr", "memberPhone": "membPhon", "membBirth": "membBirth", "retCode": "Success"} 
 			// {"mno":?, "mName":?, "mAddr":?, ...} => object
 			   out.print("{\"retCode\": \"Sucess\"}");
