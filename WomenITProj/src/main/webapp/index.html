@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>도서정보</title>
+<style>
+        form {
+            margin: 3px;
+        }
+
+        form>label {
+            display: inline-block;
+            width: 25%;
+            margin: 3px;
+            background-color: beige;
+            text-align: center;
+        }
+
+    </style>
+	<script src=bookup.js></script>
+</head>
+
+<body>
+	<form action="bookUpload" name="bookFrm" method="post" enctype="multipart/form-data">
+		<label for="bookCode">도서코드</label> 
+		<input type="text" name="bookCode" id="bookCode" readonly><br>
+		
+		<label for="bookName">도서명</label>
+		<input type="text" name="bookName" id="bookName"><br>
+		
+		<label for="bookAuth">저자</label> 
+		<input type="text" name="bookAuth" id="bookAuth"><br>
+   		
+   		<label for="bookPres">출판사</label>
+        <input type="text" name="bookPres" id="bookPres"><br>
+		
+		<label for="bookAmt">가격</label> 
+		<input type="text" name="bookAmt" id="bookAmt"><br>
+
+		<input type="submit" value="저장"> <br>
+		<input type="button" value="선택삭제" id="deleteSel">
+		
+	</form>
+
+	<div id="show">
+		<table border="1">
+			<thead>
+				<tr>
+					<th>도서코드</th>
+					<th>도서명</th>
+					<th>저자</th>
+					<th>출판사</th>
+					<th>가격</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+
+</html>
