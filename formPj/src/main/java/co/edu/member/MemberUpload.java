@@ -35,6 +35,9 @@ public class MemberUpload extends HttpServlet {
 		boolean isMulti = ServletFileUpload.isMultipartContent(request);
 
 		if (isMulti) {
+			response.setCharacterEncoding("utf-8");
+			response.setContentType("text/json;charset=utf-8");
+			
 			// multi파트 요청이면
 			String mn = request.getParameter("memberName");
 			System.out.println(mn);
@@ -69,7 +72,8 @@ public class MemberUpload extends HttpServlet {
 
 			System.out.println(mn);
 			// {"retCode": "Fulfilled"}
-			out.print("{\"retCode\": \"Fullfilled\"}");
+			// out.print("{\"retCode\": \"Fullfilled\"}");
+			out.print(gson.toJson(vo));
 			
 		} else {
 			String cmd = request.getParameter("cmd");

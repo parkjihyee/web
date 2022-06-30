@@ -35,7 +35,7 @@ public class MemberServlet extends HttpServlet {
 		if (cmd.equals("list")) { // list이면 제이슨 화면 보여주고
 			// 전체 리스트 가져와서 -> json 화면 보여주기
 			List<MemberVO> list = dao.memberList();
-			response.getWriter().print(gson.toJson(list));
+			response.getWriter().print(gson.toJson(list)); // json 데이터로 변환
 
 		} else if (cmd.equals("insert")) { //
 			String name = request.getParameter("name");
@@ -140,7 +140,7 @@ public class MemberServlet extends HttpServlet {
 		} else if (cmd.equals("remove")) {
 			String delNo = request.getParameter("delNo");
 			if (dao.deleteMember(Integer.parseInt(delNo))) {
-			   out.print("{\"retCode\": \"Sucess\"}");
+			   out.print("{\"retCode\": \"Success\"}");
 			} else {
 				out.print("{\"retCode\": \"Fail\"}");
 			}
